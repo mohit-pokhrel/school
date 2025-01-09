@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload & Share</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            border-radius: 8px;
+        }
+
+        input[type="file"], input[type="password"] {
+            margin: 10px 0;
+            padding: 8px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .uploads {
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        .uploads a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload and Share Files</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required><br>
+        <input type="password" name="password" placeholder="Enter password" required><br>
+        <input type="submit" value="Upload">
+    </form>
+
+    <div class="uploads">
+        <h2>Uploaded Files</h2>
+        <div id="file-list">
+            <!-- Uploaded files will be listed here -->
+        </div>
+    </div>
+
+    <script>
+        async function fetchFiles() {
+            const response = await fetch('/files');
+            const files = await response.json();
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = files.map(file => `<a href="/uploads/${file}" target="_blank">${file}</a>`).join('<br>');
+        }
+
+        fetchFiles();
+    </script>
+</body>
+</html>
